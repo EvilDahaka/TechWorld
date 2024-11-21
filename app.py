@@ -1,13 +1,12 @@
 from flask import Flask, render_template
 from models import init_db
-from routes import feedback_bp, products_bp
+from routes import feedback_bp, products_bp , admin_bp
 import sqlite3
 
 
 app = Flask(__name__)
-
+app.register_blueprint(admin_bp)
 app.register_blueprint(feedback_bp)
-#app.register_blueprint(admin_bp)
 app.register_blueprint(products_bp)
 #app.register_blueprint(api_bp)
 
@@ -27,7 +26,8 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             price REAL NOT NULL,
-            image TEXT
+            image TEXT,
+            tag TEXT
         )
     ''')
     conn.commit()
