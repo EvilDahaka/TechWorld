@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Товари{% endblock %}
+
+{% block content %}
+<div class="products">
+<h1>Add New Product</h1>
+    <form action="{{ url_for('add_product') }}" method="post">
+        <label for="tag">Tag:</label>
+        <input type="text" id="tag" name="tag" required><br><br>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea><br><br>
+
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" step="0.01" required><br><br>
+
+        <label for="image_url">Image URL:</label>
+        <input type="text" id="image_url" name="image_url"><br><br>
+
+        <button type="submit">Add Product</button>
+    </form>
+    <br>
+    <a href="{{ url_for('products') }}">Back to Products</a>
+</div>
+{% endblock %}

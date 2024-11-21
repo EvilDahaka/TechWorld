@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/style.css">
+
+    <title>{% block title %}TechWorld{% endblock %}</title>
+</head>
+
+<body>
+<div class="container py-3">
+    <header>
+        <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center link-body-emphasis text-decoration-none">
+                <svg xmlns="http://www.w3.org/2000/svg" height="32" width="24" viewBox="0 0 384 512">
+                    <path fill="#030635" d="M32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l128 0 0 352c0 17.7 14.3 32 32 32s32-14.3 32-32l0-352 128 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L192 32 32 32z"/>
+                </svg>
+                <span class="fa-solid fa-t fa-2xl" style="color: #030635;"></span>TechWorld
+            </a>
+
+            <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+                <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{{ url_for('home') }}">Головна</a>
+                <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{{ url_for('about') }}">Про нас</a>
+                <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{{ url_for('feedback') }}">Зворотній зв'язок</a>
+                <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{{ url_for('products') }}">Товари</a>
+                <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{{ url_for('cart') }}">Кошик</a>
+                <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{{ url_for('register') }}">Регістрація</a>
+            </nav>
+        </div>
+    </header>
+
+    {% block content %}{% endblock %}
+</div>
+
+
+<footer class="bg-dark text-white text-center py-3 fixed-bottom">
+        © 2024 Наш проект. Всі права захищені.
+</footer>
+
+</body>
+</html>
