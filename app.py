@@ -1,6 +1,8 @@
 from flask import Flask, render_template
 from models import init_db
-from routes import feedback_bp, products_bp , admin_bp
+from routes.feedback import feedback_bp
+from routes.products import products_bp
+from routes.admin import admin_bp
 import sqlite3
 
 
@@ -40,9 +42,9 @@ init_db()
 def home():
     return render_template('home.html')
 
-@app.route('/products')
-def products():
-    return render_template('products.html')
+# @app.route('/products')
+# def products():
+#    return render_template('products.html')
 
 @app.route('/feedback')
 def feedback():
