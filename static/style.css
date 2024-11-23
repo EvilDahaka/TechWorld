@@ -101,7 +101,7 @@ body {
     display:grid;
     background-color: #ddd;
     width: 320px;
-    height: 450px;
+    height: 400px;
     border-radius: 10px;
     justify-content: center;
     transition: transform 0.2s ease;
@@ -151,5 +151,3 @@ body {
     height: 330;
 
 }
-
-

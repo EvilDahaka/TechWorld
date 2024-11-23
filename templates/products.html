@@ -4,21 +4,33 @@
 
 {% block content %}
 <h1 class="text-3xl font-bold mb-4">Магазин</h1>
-
+<div class="container">
 {% if products %}
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+
+    <div class="products">
         {% for item in products %}
-        <div class="bg-white p-4 shadow-md rounded-lg relative group">
-            <img src="{{ item['image'] or '/static/images/placeholder.png' }}" alt="{{ item['name'] }}" class="w-full h-48 object-cover mb-2">
-            <h2 class="text-xl font-semibold">{{ item['name'] }}</h2>
-            <p class="text-gray-600">{{ item['price'] }} грн</p>
-            <!-- <a href="{{ url_for('products.add_to_cart', product_id=item['id']) }}" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                Купити
-            </a> -->
+        <div class="card">
+            <a href="#">
+                <img src="{{ item['image'] or 'https://via.placeholder.com/300x300'}}" >
+                <div class="card_info">
+                    <div class="card_text">
+                        <h1>{{ item['name'] }}</h1>
+                        <p>{{item['specifications']}}</p>
+                    </div>
+                    <div class="card_inner">
+                        <h1>{{ item['price'] }} грн</h1>
+                        <form method="POST" action="">
+                            <button type="submit">В кошик</button>
+                        </form>
+
+                    </div>
+                </div>     
+            </a>
         </div>
         {% endfor %}
     </div>
 {% else %}
     <p class="text-center col-span-full">Наразі немає продуктів у магазині.</p>
+</div>
 {% endif %}
 {% endblock %}
