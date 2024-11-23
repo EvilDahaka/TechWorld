@@ -1,16 +1,19 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, session
 from models import init_db
 from routes.feedback import feedback_bp
 from routes.products import products_bp
 from routes.admin import admin_bp
+from routes.api import api_bp
 import sqlite3
 
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'
+
 app.register_blueprint(admin_bp)
 app.register_blueprint(feedback_bp)
 app.register_blueprint(products_bp)
-#app.register_blueprint(api_bp)
+app.register_blueprint(api_bp)
 
 # Ініціалізація бази даних
 def init_db():
