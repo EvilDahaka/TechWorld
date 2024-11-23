@@ -1,0 +1,155 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+a {
+    text-decoration: none;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+}
+.gallery-grid {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1140px;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+.gallery-item {
+
+    display: flex;
+    margin: auto;
+    padding: 0 15px;
+    overflow: hidden;
+}
+
+.grid-iteminner {
+    margin: 0  10px;
+    position: relative;
+    display: flex;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.grid-iteminner:before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .8);
+    opacity: 0;
+    z-index: 2;
+    transition: all .4s ease;
+    content: '';
+}
+
+.grid-iteminner:hover:before {
+    opacity: 1;
+}
+
+.grid-itemimg {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    transition: all .4s ease;
+}
+
+.grid-iteminner:hover .grid-itemimg {
+    transform: scale(1.05);
+}
+
+.grid-itemtitle {
+    position: absolute;
+    left: 15px;
+    bottom: 10px;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    color: #fff;
+    z-index: 3;
+}
+
+.grid-itemtitle > span {
+    display: block;
+    transform: translateY(30px);
+    transition: transform 0.4s ease;
+    transition-delay: 0.2s;
+}
+
+.grid-iteminner:hover .grid-itemtitle > span {
+    transform: translateY(0);
+}
+/*product card*/
+.products {
+    width: 1020px;
+    height: auto;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;          
+    gap: 20px;                
+    position: relative;
+    margin: auto;
+}
+.card {
+    display:grid;
+    background-color: #ddd;
+    width: 320px;
+    height: 400px;
+    border-radius: 10px;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+.card:hover {
+    transform: scale(1.05);
+}
+/*card content*/
+.card img {
+    display:block;
+    width: 300px;
+    height: 300px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+.card_info p,h1,h2,h3,h4,h5,h6,a{
+    font-size: 14px;
+    color: black;
+    margin: 0 0;
+}
+.card_inner h1 {
+    display: block;
+    color: #fd0000;
+    font-size: 21px;
+}
+
+.card_inner {
+    display:flex;
+    position: absolute;
+    bottom: 5px;
+    display: flex;
+    right: 10px;
+    gap: 20px
+    
+}
+.card_inner button {
+    color: #000;
+    background-color: #55ff7a;
+  }
+.card_text p {
+  word-wrap: break-word; /* переносить слова, якщо вони не поміщаються */
+  height: 90px;
+} 
+
+.card_info {
+    width: 300px;
+    height: 330;
+
+}
+
+
