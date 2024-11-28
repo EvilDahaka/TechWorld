@@ -26,6 +26,8 @@ def init_db():
             message TEXT NOT NULL
         )
     ''')
+    
+    # Створення таблиці products
     conn.execute('''
         CREATE TABLE IF NOT EXISTS products (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -36,6 +38,21 @@ def init_db():
             tag TEXT
         )
     ''')
+    
+    # Створення таблиці cart
+    try:
+        conn.execute('''
+            CREATE TABLE IF NOT EXISTS cart (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                product_id INTEGER NOT NULL,
+                quantity INTEGER NOT NULL DEFAULT 1,
+                FOREIGN KEY (user_id) REFERENCES users(id),
+                FOREIGN KEY (product_id) REFERENCES products(id)
+            )
+        ''')
+    except sqlite3.OperationalError:
+        print("Таблиця 'cart' вже існує.")
     conn.commit()
     conn.close()
 
@@ -45,11 +62,6 @@ init_db()
 @app.route('/home')
 def home():
     return render_template('home.html')
-
-# @app.route('/products')
-# def products():
-#    return render_template('products.html')
-
 @app.route('/feedback')
 def feedback():
     return render_template('feedback.html')
