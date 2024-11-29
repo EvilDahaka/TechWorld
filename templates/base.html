@@ -26,7 +26,12 @@
                 <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{{ url_for('feedback') }}">Зворотній зв'язок</a>
                 <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{{ url_for('products.products') }}">Товари</a>
                 <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{{ url_for('cart') }}">Кошик</a>
-                <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{{ url_for('register') }}">Регістрація</a>
+                {% if auth %}
+                <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{{ url_for('user.logout') }}">Вихід</a>
+                {% else %}
+                <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{{ url_for('user.register') }}">Реєстрація</a>
+                <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{{ url_for('user.login') }}">Вхід</a>
+            {% endif %}
             </nav>
         </div>
     </header>

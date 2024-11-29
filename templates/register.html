@@ -5,26 +5,26 @@
 <h1 class="text-3xl text-center font-bold mb-4">Регістрація</h1>
 <div class="circle"></div>
 <div class="register-form-container">
-    <div class="form-fields">
+    <form method="POST">
         <div class="form-field text-center">
-            <input type="text" placeholder="Ім'я">
+            <input type="text" name="username" placeholder="Ім'я" required>
         </div>
         <div class="form-field text-center">
-            <input type="text" placeholder="Почта">
+            <input type="email" name="email" placeholder="Почта" required>
         </div>
         <div class="form-field text-center">
-            <input type="text" placeholder="Пароль">
+            <input type="password" name="password" placeholder="Пароль" required>
         </div>
         <div class="form-field text-center">
-            <input type="text" placeholder="Підтвердити пароль">
+            <input type="password" name="confirm_password" placeholder="Підтвердити пароль" required>
         </div>
-    </div>
-    <div class="form-buttons text-center">
-        <button class="button">Регістрація</button>
-        <div class="devider">або</div>
-        <a href="#" class="button">Google</a>
+        <div class="form-buttons text-center">
+            <button class="button">Реєстрація</button>
+            <div class="devider">або</div>
+            <a href="{{ url_for('user.login') }}" class="button">у мене вже обліковий запис </a>
+        </div>
+    </form>
+    
+</div>
 
-    </div>
-
-    </div>
 {% endblock %}

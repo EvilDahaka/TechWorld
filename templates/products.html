@@ -19,7 +19,7 @@
                     </div>
                     <div class="card_inner">
                         <h1>{{ item['price'] }} грн</h1>
-                        <form method="POST" action="">
+                        <form action="{{ url_for('products.add_to_cart', product_id=item['id']) }}" method="post">
                             <button type="submit">В кошик</button>
                         </form>
 

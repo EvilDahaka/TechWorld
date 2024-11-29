@@ -3,41 +3,46 @@
 {% block title %}Кошик{% endblock %}
 
 {% block content %}
-<h1 class="text-3xl font-bold mb-4">Кошик</h1>
-{% if cart %}
-    <table class="w-full mb-4">
-        <thead>
-            <tr>
-                <th class="text-left">Товар</th>
-                <th class="text-left">Ціна</th>
-                <th class="text-left">Кількість</th>
-                <th class="text-left">Всього</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in cart.values() %}
-            <tr>
-                <td>{{ item.name }}</td>
-                <td>{{ item.price }} грн</td>
-                <td>{{ item.quantity }}</td>
-                <td>{{ item.price * item.quantity }} грн</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <p class="text-xl font-bold mb-4">Загальна вартість: {{ total }} грн</p>
-    <form action="{{ url_for('shop.checkout') }}" method="post">
-        <div class="mb-4">
-            <label for="email" class="block mb-2">Email:</label>
-            <input type="email" id="email" name="email" required class="w-full p-2 border rounded">
-        </div>
-        <div class="mb-4">
-            <label for="address" class="block mb-2">Адреса доставки:</label>
-            <textarea id="address" name="address" required class="w-full p-2 border rounded"></textarea>
-        </div>
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Оплатити замовлення</button>
-    </form>
-{% else %}
-    <p>Ваш кошик порожній.</p>
-{% endif %}
+<div class="container mx-auto py-6">
+    <h1 class="text-3xl font-bold mb-4">Кошик</h1>
+    {% if cart %}
+        <table class="w-full border-collapse border border-gray-300 mb-4">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="border border-gray-300 px-4 py-2 text-left">Товар</th>
+                    <th class="border border-gray-300 px-4 py-2 text-left">Ціна (грн)</th>
+                    <th class="border border-gray-300 px-4 py-2 text-left">Кількість</th>
+                    <th class="border border-gray-300 px-4 py-2 text-left">Всього (грн)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                <tr>
+                    <td class="border border-gray-300 px-4 py-2">{{ item['name'] }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ item['price'] }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ item['quantity'] }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ item['price'] * item['quantity']}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p class="text-xl font-bold mb-4">Загальна вартість: {{ total }} грн</p>
+        <form action="{{ url_for('products.checkout') }}" method="post">
+            <div class="mb-4">
+                <label for="email" class="block text-sm font-medium mb-2">Email:</label>
+                <input type="email" id="email" name="email" required class="w-full border border-gray-300 px-3 py-2 rounded">
+            </div>
+            <div class="mb-4">
+                <label for="address" class="block text-sm font-medium mb-2">Адреса доставки:</label>
+                <input type="text" id="address" name="address" required  class="w-full border border-gray-300 px-3 py-2 rounded">
+            </div>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                Оплатити замовлення
+            </button>
+        </form>
+    {% else %}
+        <p class="text-lg">Ваш кошик порожній.</p>
+        <a href="{{ url_for('products.list') }}" class="text-blue-500 hover:underline mt-2 inline-block">Повернутися до покупок</a>
+    {% endif %}
+</div>
 {% endblock %}

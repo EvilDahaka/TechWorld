@@ -1,12 +1,9 @@
 from flask import Blueprint, render_template, request
-import sqlite3
+from models import get_db_connection
 
 feedback_bp = Blueprint('feedback', __name__, url_prefix='/feedback')
 
-def get_db_connection():
-    conn = sqlite3.connect('db.sqlite')
-    conn.row_factory = sqlite3.Row
-    return conn
+get_db_connection()
 
 @feedback_bp.route('/', methods=['GET', 'POST'])
 def feedback():
