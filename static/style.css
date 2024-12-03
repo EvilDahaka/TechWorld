@@ -151,3 +151,132 @@ body {
     height: 330;
 
 }
+
+/*for register*/
+.register-page {
+    margin: 0;
+    padding: 0;
+    height: 100vh; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ffffff;
+    font-family: Arial, sans-serif;
+    position: relative;
+}
+
+/* Декоративний круг */
+/* .register-page .circle {
+    position: absolute;
+    z-index: 1;
+    width: 534px;
+    height: 534px;
+    border-radius: 50%;
+    background: #f7faff;
+    box-shadow: 0px 4px 70px 6px rgba(217, 229, 225, 0.25);
+    animation: fadeCircle 0.7s ease-in-out 0.5s forwards;
+} */
+
+/* @keyframes fadeCircle {
+    0% {
+        width: 2534px;
+        height: 2534px;
+    }
+    100% {
+        width: 534px;
+        height: 534px;
+    }
+} */
+
+/* Контейнер форми */
+.register-page .register-form-container {
+    position: relative;
+    z-index: 2;
+    max-width: 415px;
+    width: 100%;
+    background: #f1f5fe;
+    /* Прибираємо тінь */
+    /* box-shadow: 0px 6px 50px rgba(217, 229, 255, 0.7); */
+    border-radius: 20px;
+    padding: 30px;
+    /* Прибираємо анімацію */
+    /* animation: fadeForm 0.7s ease-in-out 1.4s forwards; */
+}
+
+/* @keyframes fadeForm {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+} */
+
+/* Заголовок форми */
+.register-page .form-title {
+    color: #305970;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 23px;
+    margin-bottom: 38px;
+    text-align: center;
+}
+
+/* Поля вводу */
+.register-page input {
+    height: 45px;
+    width: 100%;
+    color: #3b5983;
+    font-size: 14px;
+    line-height: 16px;
+    border: 2px solid #e9f2ff;
+    border-radius: 5px;
+    padding-left: 25px;
+    margin-bottom: 13px;
+}
+
+.register-page input:focus {
+    border-color: #c1d9fd;
+    outline: none;
+}
+
+/* Кнопки */
+.register-page .button {
+    display: inline-block;
+    font-size: 14px;
+    height: 45px;
+    background: #247fff;
+    border-radius: 5px;
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 45px;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.register-page .button:hover {
+    background-color: #0d6cf2;
+}
+
+.register-page .button-login {
+    color: #c6cfdc;
+    background: #f2f6ff;
+}
+
+.register-page .button-login:hover {
+    background: #e2e6f0;
+    color: #305970;
+}
+
+/* Лінія "або" між кнопками */
+.register-page .divider {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 14px;
+    color: #405d87;
+    text-align: center;
+    padding: 25px 0;
+}
