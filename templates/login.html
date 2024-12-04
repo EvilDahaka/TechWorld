@@ -2,21 +2,19 @@
 {% block title %}Вхід обліковий запис{% endblock %}
 {% block content %}
 
-<h1 class="text-3xl text-center font-bold mb-4">Вхід обліковий запис</h1>
-<div class="circle"></div>
-<div class="register-form-container">
-    <form method="POST">
-        <div class="form-field text-center">
-            <input type="email" name="email" placeholder="Почта" required>
-        </div>
-        <div class="form-field text-center">
+<div class="login-page">
+    <div class="circle"></div>
+    <div class="login-form-container">
+        <h1>Вхід обліковий запис</h1>
+        <form method="POST">
+            <input type="email" name="email" placeholder="Пошта" required>
             <input type="password" name="password" placeholder="Пароль" required>
-        </div>
-        <div class="form-buttons text-center">
-            <button class="button">Увійти</button>
-            <div class="devider">або</div>
-            <a href="{{ url_for('user.register') }}" class="button">Регістрація</a>
-        </div>
+            <button type="submit" class="button">Увійти</button>
+            <div class="divider">або</div>
+            <a href="{{ url_for('user.register') }}" class="button">Реєстрація</a>
+        </form>
+    </div>
+</div>
     </form>
     
 </div>
