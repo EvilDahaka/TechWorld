@@ -17,6 +17,9 @@ app.register_blueprint(products_bp)
 app.register_blueprint(api_bp)
 app.register_blueprint(user_bp)
 
+
+
+
 # Ініціалізація бази даних
 
 init_db()

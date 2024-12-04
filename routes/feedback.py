@@ -20,3 +20,5 @@ def feedback():
     feedbacks = conn.execute('SELECT * FROM feedback').fetchall()
     conn.close()
     return render_template('feedback.html', feedbacks=feedbacks)
+
+

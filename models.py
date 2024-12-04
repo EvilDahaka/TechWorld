@@ -1,4 +1,5 @@
 import sqlite3
+from flask import session
 from datetime import datetime
 def init_db():
     conn = sqlite3.connect('db.sqlite')
@@ -122,6 +123,40 @@ def delete_order(order_id):
     conn.execute('DELETE FROM orders WHERE id = ?', (order_id,))
     conn.commit()
     conn.close()
+
+def get_current_user():
+    """
+    Функція для отримання поточного користувача з сесії.
+    Повертає дані користувача або None, якщо користувач не авторизований.
+    """
+    user_id = session.get('user_id')
+    if user_id:
+        conn = get_db_connection()
+        try:
+            cur = conn.cursor()
+            user = cur.execute('SELECT * FROM users WHERE id = ?', (user_id,)).fetchone()
+            return user
+        finally:
+            conn.close()
+    return None
+
+def add_feedback(name, email, message):
+    """
+    Функція для додавання нового відгуку в базу даних.
+    Параметри:
+    - name: ім'я користувача
+    - email: email користувача
+    - message: текст відгуку
+    """
+    conn = get_db_connection()
+    try:
+        conn.execute(
+            'INSERT INTO feedback (name, email, message) VALUES (?, ?, ?)',
+            (name, email, message)
+        )
+        conn.commit()
+    finally:
+        conn.close()
 
 
     

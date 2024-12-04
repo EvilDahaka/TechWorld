@@ -60,7 +60,6 @@ def add_to_cart(product_id):
 
 
 @products_bp.route('/cart')
-@products_bp.route('/cart')
 def cart():
     cart = get_cart()
     total = 0
