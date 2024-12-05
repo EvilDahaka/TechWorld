@@ -64,17 +64,17 @@ def create_order():
         return jsonify({'error': str(e)}), 500
 
 
-@api_bp.route('/api/orders/<int:order_id>', methods=['PUT'])
-def update_order(order_id):
-    try:
-        data = request.get_json()
-        if not data or 'status' not in data:
-            return jsonify({'error': 'Status is required'}), 400
+#@api_bp.route('/api/orders/<int:order_id>', methods=['PUT'])
+#def update_order(order_id):
+    #try:
+        #data = request.get_json()
+        #if not data or 'status' not in data:
+            #return jsonify({'error': 'Status is required'}), 400
 
-        update_order_status(order_id, data['status'])
-        return jsonify({'message': 'Order updated successfully'}), 200
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        #update_order_status(order_id, data['status'])
+        #return jsonify({'message': 'Order updated successfully'}), 200
+    #except Exception as e:
+        #return jsonify({'error': str(e)}), 500
 
 @api_bp.route('/api/orders/<int:order_id>', methods=['DELETE'])
 def remove_order(order_id):
@@ -83,6 +83,29 @@ def remove_order(order_id):
         return jsonify({'message': 'Order deleted successfully'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+@api_bp.route('/api/orders/<int:order_id>', methods=['PUT'])
+def update_order(order_id):
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'No data provided'}), 400
+
+        # Оновлення статусу замовлення
+        if 'status' in data:
+            update_order_status(order_id, data['status'])
+
+        # Оновлення адреси доставки
+        if 'address' in data:
+            conn = get_db_connection()
+            conn.execute("UPDATE orders SET address = ? WHERE id = ?", (data['address'], order_id))
+            conn.commit()
+            conn.close()
+
+        return jsonify({'message': 'Order updated successfully'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 # User endpoints (Registration, Login, Logout)
 @api_bp.route('/api/register', methods=['POST'])
@@ -132,7 +155,8 @@ def login_user():
         conn = get_db_connection()
         user = conn.execute('SELECT * FROM users WHERE email = ?', (email,)).fetchone()
 
-        if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+        if user and bcrypt.checkpw(password.encode('utf-8'), user['password']):
+
             session['user_id'] = user['id']
             conn.close()
             return jsonify({'message': 'Login successful'}), 200
@@ -150,6 +174,16 @@ def logout_user():
         return jsonify({'error': str(e)}), 500
 
 # Feedback endpoints
+@api_bp.route('/api/feedback', methods=['GET'])
+def get_all_feedback():
+    try:
+        conn = get_db_connection()
+        feedbacks = conn.execute("SELECT * FROM feedback").fetchall()
+        conn.close()
+        return jsonify([dict(feedback) for feedback in feedbacks]), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @api_bp.route('/api/feedback', methods=['POST'])
 def create_feedback():
     try:
@@ -159,6 +193,23 @@ def create_feedback():
 
         add_feedback(data['name'], data['email'], data['message'])
         return jsonify({'message': 'Feedback submitted successfully'}), 201
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+@api_bp.route('/api/feedback/<int:feedback_id>', methods=['DELETE'])
+def delete_feedback(feedback_id):
+    try:
+        conn = get_db_connection()
+        feedback = conn.execute("SELECT * FROM feedback WHERE id = ?", (feedback_id,)).fetchone()
+        if not feedback:
+            conn.close()
+            return jsonify({'error': 'Feedback not found'}), 404
+
+        conn.execute("DELETE FROM feedback WHERE id = ?", (feedback_id,))
+        conn.commit()
+        conn.close()
+
+        return jsonify({'message': 'Feedback deleted successfully'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
