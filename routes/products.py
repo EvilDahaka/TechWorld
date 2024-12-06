@@ -1,14 +1,20 @@
 from flask import Blueprint, render_template, request, session, jsonify, redirect, url_for
-from models import get_db_connection, add_order, get_products
+from models import get_db_connection, add_order
 from .user import auth
 
 products_bp = Blueprint('products', __name__)
 
 get_db_connection()
 
+@products_bp.before_request
+def check_auth():
+    if not auth():  # Викликається перед кожним запитом до цього блоку
+        return redirect(url_for('user.login'))
+
 # Сторінка продуктів із фільтром за тегом
 @products_bp.route('/products')
 def products():
+
     tag = request.args.get('tag')
     conn = get_db_connection()
     if tag:
@@ -24,9 +30,6 @@ def products():
 @products_bp.route('/add_to_cart/<int:product_id>', methods=['POST'])
 def add_to_cart(product_id):
     user_id = session.get('user_id')  # ID користувача з сесії
-    if not user_id:
-        return redirect(url_for('user.login'))  # Перенаправлення на логін, якщо користувач не авторизований
-
     conn = get_db_connection()
 
     # Отримуємо дані продукту з бази даних

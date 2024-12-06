@@ -23,18 +23,22 @@ app.register_blueprint(user_bp)
 # Ініціалізація бази даних
 
 init_db()
+#перевірка аутефікації юзера?
+@app.context_processor
+def inject_auth():
+    return {'auth': auth()}
 
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template('home.html', auth=auth())
+    return render_template('home.html')
 @app.route('/feedback')
 def feedback():
-    return render_template('feedback.html', auth=auth())
+    return render_template('feedback.html')
 
 @app.route('/about')
 def about():
-    return render_template('about.html', auth=auth())
+    return render_template('about.html')
 
 '''@app.route('/cart')
 def cart():
