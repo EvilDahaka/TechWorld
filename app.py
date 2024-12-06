@@ -4,7 +4,7 @@ from routes.feedback import feedback_bp
 from routes.products import products_bp
 from routes.admin import admin_bp
 from routes.api import api_bp
-from routes.user import user_bp, auth, get_name_user
+from routes.user import user_bp, auth
 import sqlite3
 
 
@@ -30,15 +30,15 @@ def home():
     return render_template('home.html', auth=auth())
 @app.route('/feedback')
 def feedback():
-    return render_template('feedback.html')
+    return render_template('feedback.html', auth=auth())
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    return render_template('about.html', auth=auth())
 
-@app.route('/cart')
+'''@app.route('/cart')
 def cart():
-    return render_template('cart.html')
-
+    return render_template('cart.html', auth=auth())
+'''
 if __name__ == '__main__':
     app.run(debug=True)

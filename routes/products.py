@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, session, jsonify, redirect, url_for
 from models import get_db_connection, add_order, get_products
+from .user import auth
 
 products_bp = Blueprint('products', __name__)
 
@@ -24,7 +25,7 @@ def products():
 def add_to_cart(product_id):
     user_id = session.get('user_id')  # ID користувача з сесії
     if not user_id:
-        return redirect(url_for('user.auth'))  # Перенаправлення на логін, якщо користувач не авторизований
+        return redirect(url_for('user.login'))  # Перенаправлення на логін, якщо користувач не авторизований
 
     conn = get_db_connection()
 
@@ -59,7 +60,7 @@ def add_to_cart(product_id):
     return redirect(url_for('products.products'))
 
 
-@products_bp.route('/cart')
+@products_bp.route('/cart',endpoint='cart')
 def cart():
     cart = get_cart()
     total = 0
@@ -90,11 +91,6 @@ def remove_from_cart(product_id):
         session.modified = True
         return jsonify({"message": "Товар видалено з кошика", "cart": cart})
     return jsonify({"error": "Товар не знайдено в кошику"}), 404
-# Очищення кошика
-@products_bp.route('/cart/clear', methods=['POST'])
-def clear_cart():
-    session.pop('cart', None)
-    return jsonify({"message": "Кошик очищено"})
 # Запис замовлення 
 @products_bp.route('/checkout', methods=['POST'])
 def checkout():
@@ -107,6 +103,22 @@ def checkout():
 
 def get_cart():
     conn = get_db_connection()
-    products = conn.execute("SELECT * FROM cart").fetchall()
+    user_id = auth()
+    products = conn.execute("SELECT * FROM cart WHERE user_id = ?", (user_id,)).fetchall()
     conn.close()
     return products
+@products_bp.route('/cart/clear', methods=['POST'])
+def clear_cart():
+    conn = get_db_connection()
+    user_id = auth()  # Перевірка автентифікації та отримання user_id
+
+    if not user_id:  # Якщо user_id не знайдено
+        return "Unauthorized", 401
+
+    # Видаляємо записи з таблиці cart для user_id
+    conn.execute("DELETE FROM cart WHERE user_id = ?", (user_id,))
+    conn.commit()
+    conn.close()
+
+    # Перенаправлення на сторінку кошика
+    return redirect(url_for('products.cart'))

@@ -101,10 +101,6 @@ def logout():
     session.pop('user_id', None)  # Видаляємо user_id з сесії
     print("Ви вийшли з системи.")
     return redirect(url_for('home'))
-
+#видає none якщо не найде юзера а так видає його id 
 def auth():
     return session.get('user_id') is not None
-
-def get_name_user()->str:
-    name = get_current_user()
-    return name['name']

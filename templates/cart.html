@@ -36,13 +36,18 @@
                 <label for="address" class="block text-sm font-medium mb-2">Адреса доставки:</label>
                 <input type="text" id="address" name="address" required  class="w-full border border-gray-300 px-3 py-2 rounded">
             </div>
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                Оплатити замовлення
+            <button type="submit" class="bg-blue-500 text-green-800 px-4 py-2 rounded hover:bg-blue-600">
+                Оплатити замовлення 
+            </button>
+        </form>
+        <form action="{{ url_for('products.clear_cart') }}" method="post">
+            <button type="submit" class="bg-blue-500 text-red-900 px-4 py-2 rounded hover:bg-blue-600">
+                Очистити кошик
             </button>
         </form>
     {% else %}
         <p class="text-lg">Ваш кошик порожній.</p>
-        <a href="{{ url_for('products.list') }}" class="text-blue-500 hover:underline mt-2 inline-block">Повернутися до покупок</a>
+        <a href="{{ url_for('products.products') }}" class="text-blue-500 hover:underline mt-2 inline-block">Повернутися до покупок</a>
     {% endif %}
 </div>
 {% endblock %}
