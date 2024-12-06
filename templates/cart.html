@@ -42,7 +42,7 @@
         </form>
     {% else %}
         <p class="text-lg">Ваш кошик порожній.</p>
-        <a href="{{ url_for('products.list') }}" class="text-blue-500 hover:underline mt-2 inline-block">Повернутися до покупок</a>
+        <a href="{{ url_for('products.products') }}" class="text-blue-500 hover:underline mt-2 inline-block">Повернутися до покупок</a>
     {% endif %}
 </div>
 {% endblock %}

@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, session, jsonify, redirect, url_for
 from models import get_db_connection, add_order, get_products
+from .user import auth
 
 products_bp = Blueprint('products', __name__)
 
@@ -107,6 +108,7 @@ def checkout():
 
 def get_cart():
     conn = get_db_connection()
-    products = conn.execute("SELECT * FROM cart").fetchall()
+    user_id = auth()
+    products = conn.execute("SELECT * FROM cart WHERE id = ?", (user_id,)).fetchall()
     conn.close()
     return products
