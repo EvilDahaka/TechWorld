@@ -16,14 +16,7 @@ def check_auth():
 def products():
 
     tag = request.args.get('tag')
-    conn = get_db_connection()
-    if tag:
-        query = "SELECT * FROM products WHERE tag = ?"
-        products = conn.execute(query, (tag,)).fetchall()
-    else:
-        query = "SELECT * FROM products"
-        products = conn.execute(query).fetchall()
-    conn.close()
+    products = get_products(tag=tag)
     return render_template('products.html', products=products)
 
 # Додавання товару до кошика
@@ -63,7 +56,7 @@ def add_to_cart(product_id):
     return redirect(url_for('products.products'))
 
 
-@products_bp.route('/cart',endpoint='cart')
+@products_bp.route('/cart')
 def cart():
     cart = get_cart()
     total = 0
@@ -125,3 +118,28 @@ def clear_cart():
 
     # Перенаправлення на сторінку кошика
     return redirect(url_for('products.cart'))
+
+def get_products(id=None, tag=None, name=None):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    query = "SELECT * FROM products WHERE 1=1"
+    params = []
+
+    if id is not None: 
+        query += " AND id = ?"
+        params.append(id)
+    if tag is not None:
+        query += " AND tag = ?"
+        params.append(tag)
+    if name is not None:
+        query += " AND name = ?"
+        params.append(name)
+
+    cursor.execute(query, params)
+    results = cursor.fetchall()
+
+    conn.close()
+
+    return results
+    

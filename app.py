@@ -5,7 +5,6 @@ from routes.products import products_bp
 from routes.admin import admin_bp
 from routes.api import api_bp
 from routes.user import user_bp, auth
-import sqlite3
 
 
 app = Flask(__name__)
@@ -23,7 +22,7 @@ app.register_blueprint(user_bp)
 # Ініціалізація бази даних
 
 init_db()
-#перевірка аутефікації юзера?
+#перевірка аутентифікація користувача?
 @app.context_processor
 def inject_auth():
     return {'auth': auth()}
@@ -40,9 +39,5 @@ def feedback():
 def about():
     return render_template('about.html')
 
-'''@app.route('/cart')
-def cart():
-    return render_template('cart.html', auth=auth())
-'''
 if __name__ == '__main__':
     app.run(debug=True)

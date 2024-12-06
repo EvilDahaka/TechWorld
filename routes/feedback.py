@@ -21,4 +21,8 @@ def feedback():
     conn.close()
     return render_template('feedback.html', feedbacks=feedbacks)
 
-
+def get_feedback():
+    conn = get_db_connection()
+    feedback = conn.execute('SELECT * FROM feedback').fetchall()
+    conn.close()
+    return feedback

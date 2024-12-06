@@ -104,3 +104,9 @@ def logout():
 #видає none якщо не найде юзера а так видає його id 
 def auth():
     return session.get('user_id') is not None
+
+def get_users():
+    conn = get_db_connection()
+    users = conn.execute('SELECT * FROM users').fetchall()
+    conn.close()
+    return users
