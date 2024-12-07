@@ -4,7 +4,7 @@ from routes.feedback import feedback_bp
 from routes.products import products_bp
 from routes.admin import admin_bp
 from routes.api import api_bp
-from routes.user import user_bp, auth
+from routes.user import user_bp, auth, get_username
 
 
 app = Flask(__name__)
@@ -25,7 +25,7 @@ init_db()
 #перевірка аутентифікація користувача?
 @app.context_processor
 def inject_auth():
-    return {'auth': auth()}
+    return {'auth': auth(),'username':get_username()}
 
 @app.route('/')
 @app.route('/home')

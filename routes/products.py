@@ -74,19 +74,45 @@ def cart():
             print(f"Недостає ключів у товарі: {item}")
     return render_template('cart.html', cart=cart, total=total)
 
+@products_bp.route('/cart/update/<int:product_id>', methods=['POST'])
+def update_quantity(product_id):
+    action = request.form.get('action')
+    user_id = session.get('user_id')
+    conn = get_db_connection()
 
+    # Перевіряємо наявність товару в кошику
+    product = conn.execute("SELECT * FROM cart WHERE user_id = ? AND id = ?", (user_id, product_id)).fetchone()
+    
+    if not product:
+        return jsonify({"error": "Товар не знайдено в кошику"}), 404
 
+    if action == 'increase':
+        new_quantity = product['quantity'] + 1
+    elif action == 'decrease' and product['quantity'] > 1:
+        new_quantity = product['quantity'] - 1
+    else:
+        return redirect(url_for('products.cart'))
+        
 
-# Видалення товару з кошика
+    # Оновлюємо кількість товару в кошику
+    conn.execute("UPDATE cart SET quantity = ? WHERE user_id = ? AND id = ?", (new_quantity, user_id, product_id))
+    conn.commit()
+    conn.close()
+
+    return redirect(url_for('products.cart'))
+
 @products_bp.route('/cart/remove/<int:product_id>', methods=['POST'])
 def remove_from_cart(product_id):
-    cart = session.get('cart', {})
-    if str(product_id) in cart:
-        del cart[str(product_id)]
-        session['cart'] = cart
-        session.modified = True
-        return jsonify({"message": "Товар видалено з кошика", "cart": cart})
-    return jsonify({"error": "Товар не знайдено в кошику"}), 404
+    user_id = session.get('user_id')
+    conn = get_db_connection()
+
+    # Видалення товару з кошика
+    conn.execute("DELETE FROM cart WHERE user_id = ? AND id = ?", (user_id, product_id))
+    conn.commit()
+    conn.close()
+
+    return redirect(url_for('products.cart'))
+
 # Запис замовлення 
 @products_bp.route('/checkout', methods=['POST'])
 def checkout():
@@ -94,7 +120,7 @@ def checkout():
     email = request.form['email']
     address = request.form['address']
     add_order(email, address, cart)
-    session['cart'] = {}
+    clear_cart()
     return redirect(url_for('products.products'))
 
 def get_cart():
@@ -106,7 +132,7 @@ def get_cart():
 @products_bp.route('/cart/clear', methods=['POST'])
 def clear_cart():
     conn = get_db_connection()
-    user_id = auth()  # Перевірка автентифікації та отримання user_id
+    user_id = session.get('user_id')  # Перевірка автентифікації та отримання user_id
 
     if not user_id:  # Якщо user_id не знайдено
         return "Unauthorized", 401

@@ -28,6 +28,7 @@
                 <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{{ url_for('products.cart') }}">Кошик</a>
                 {% if auth %}
                 <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{{ url_for('user.logout') }}">Вихід</a>
+                <p class="me-3 py-2 link-body-emphasis text-decoration-none" >{{ username }}</p>
                 {% else %}
                 <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{{ url_for('user.register') }}">Реєстрація</a>
                 <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{{ url_for('user.login') }}">Вхід</a>

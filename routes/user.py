@@ -15,9 +15,9 @@ def validate_registration_data(username, email, password, confirm_password):
         return "Ім'я користувача може містити тільки букви, цифри, _, . або -."
     if not re.match(r'^[^@]+@[^@]+\.[^@]+$', email):
         return "Некоректний формат email."
-    if len(password) < 8:
-        return "Пароль повинен бути не менше 8 символів."
-    if not re.search(r'[A-Za-z]', password) or not re.search(r'\d', password):
+    if len(password) < 4:
+        return "Пароль повинен бути не менше 4 символів."
+    if not re.search(r'\d', password):
         return "Пароль повинен містити букви та цифри."
     if password != confirm_password:
         return "Паролі не співпадають."
@@ -110,3 +110,18 @@ def get_users():
     users = conn.execute('SELECT * FROM users').fetchall()
     conn.close()
     return users
+
+def get_username():
+    user_id = session.get('user_id')
+    if user_id is None:
+        return None  # Якщо користувача немає в сесії, повертаємо None
+    
+    conn = get_db_connection()
+    result = conn.execute('SELECT username FROM users WHERE id = ?', (user_id,)).fetchone()
+
+
+    conn.close()
+    
+    if result:
+        return result['username']  # Якщо користувач знайдений, повертаємо ім'я
+    return None  # Якщо користувач не знайдений
