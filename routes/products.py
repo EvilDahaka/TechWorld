@@ -99,7 +99,7 @@ def checkout():
 
 def get_cart():
     conn = get_db_connection()
-    user_id = auth()
+    user_id = session.get('user_id')
     products = conn.execute("SELECT * FROM cart WHERE user_id = ?", (user_id,)).fetchall()
     conn.close()
     return products
