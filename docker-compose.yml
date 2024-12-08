@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  web:
+    build: .  # Використовує існуючий Dockerfile
+    ports:
+      - "5000:5000"  # Мапінг портів
+    volumes:
+      - ./data:/app/data  # Для бази даних
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+    restart: unless-stopped  # Автоматичний перезапуск при збої
