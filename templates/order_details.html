@@ -19,12 +19,14 @@
         </tr>
     </thead>
     <tbody>
+        {{ items }}
         {% for item in items %}
         <tr>
-            <td>{{ item['name'] }}</td>
-            <td>{{ item['price'] }} грн</td>
-            <td>{{ item['quantity'] }}</td>
-            <td>{{ item['price'] * item['quantity'] }} грн</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.price }} грн</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.price * item.quantity }} грн</td>
+
         </tr>
         {% endfor %}
     </tbody>

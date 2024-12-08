@@ -9,7 +9,7 @@
     {% if cart %}
     <table class="table table-striped">
         <thead>
-            <tr>
+            <tr><th scope="col">№</th>
                 <th scope="col">Товар</th>
                 <th scope="col">Ціна (грн)</th>
                 <th scope="col">Кількість</th>
@@ -20,6 +20,7 @@
         <tbody>
             {% for item in cart %}
             <tr>
+                <td>{{ item['id'] }}</td>
                 <td>{{ item['name'] }}</td>
                 <td>{{ item['price'] }} грн</td>
                 <td>

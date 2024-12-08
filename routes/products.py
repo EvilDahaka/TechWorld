@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, session, jsonify, redirect, url_for
-from models import get_db_connection, add_order
+from models import get_db_connection, add_order, get_products
 from .user import auth
 
 products_bp = Blueprint('products', __name__)
@@ -116,7 +116,7 @@ def remove_from_cart(product_id):
 # Запис замовлення 
 @products_bp.route('/checkout', methods=['POST'])
 def checkout():
-    cart = session.get('cart', {})
+    cart = get_cart()
     email = request.form['email']
     address = request.form['address']
     add_order(email, address, cart)
@@ -145,27 +145,5 @@ def clear_cart():
     # Перенаправлення на сторінку кошика
     return redirect(url_for('products.cart'))
 
-def get_products(id=None, tag=None, name=None):
-    conn = get_db_connection()
-    cursor = conn.cursor()
 
-    query = "SELECT * FROM products WHERE 1=1"
-    params = []
-
-    if id is not None: 
-        query += " AND id = ?"
-        params.append(id)
-    if tag is not None:
-        query += " AND tag = ?"
-        params.append(tag)
-    if name is not None:
-        query += " AND name = ?"
-        params.append(name)
-
-    cursor.execute(query, params)
-    results = cursor.fetchall()
-
-    conn.close()
-
-    return results
     

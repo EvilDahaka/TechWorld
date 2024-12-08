@@ -35,7 +35,13 @@ def delete_product(id):
 @admin_bp.route('/admin/order/<int:order_id>')
 def order_details(order_id):
     order, items = get_order_details(order_id)
+
+    # Перевірка наявності ключа price та quantity
+    for item in items:
+        print(item.keys())  # Виведе всі доступні ключі для кожного елементу в items
+
     return render_template('order_details.html', order=order, items=items)
+
 
 @admin_bp.route('/admin/update_order_status/<int:order_id>', methods=['POST'])
 def update_order(order_id):

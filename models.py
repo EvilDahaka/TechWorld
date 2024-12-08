@@ -87,16 +87,20 @@ def get_db_connection():
 
 def add_order(email, address, cart):
     conn = get_db_connection()
-    total_price = sum(item['price'] * item['quantity'] for item in cart.values())
-    cur = conn.cursor()
-    cur.execute('INSERT INTO orders (email, address, total_price, status, date) VALUES (?, ?, ?, ?, ?)',
-                (email, address, total_price, 'New', datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
-    order_id = cur.lastrowid
-    for item in cart.values():
-        cur.execute('INSERT INTO order_items (order_id, product_id, quantity) VALUES (?, ?, ?)',
-                    (order_id, item['id'], item['quantity']))
-    conn.commit()
-    conn.close()
+    try:
+        total_price = sum(item['price'] * item['quantity'] for item in cart)
+        cur = conn.cursor()
+        cur.execute('INSERT INTO orders (email, address, total_price, status, date) VALUES (?, ?, ?, ?, ?)',
+                    (email, address, total_price, 'New', datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+        order_id = cur.lastrowid
+        for item in cart:
+            product = get_products(name=item['name'])  # Вказано аргумент 'name'
+            cur.execute('INSERT INTO order_items (order_id, product_id, quantity) VALUES (?, ?, ?)',
+                        (order_id, product['id'], item['quantity']))
+        conn.commit()
+    finally:
+        conn.close()
+
 
 def get_orders():
     conn = get_db_connection()
@@ -106,10 +110,39 @@ def get_orders():
 
 def get_order_details(order_id):
     conn = get_db_connection()
+    conn.row_factory = sqlite3.Row
+    
     order = conn.execute('SELECT * FROM orders WHERE id = ?', (order_id,)).fetchone()
-    items = conn.execute('SELECT oi.quantity, p.name, p.price FROM order_items oi JOIN products p ON oi.product_id = p.id WHERE oi.order_id = ?', (order_id,)).fetchall()
+    
+    # Отримуємо quantity і product_id з таблиці order_items
+    items = conn.execute('SELECT quantity, product_id FROM order_items WHERE order_id = ?', (order_id,)).fetchall()
+
+    # Для кожного item робимо окремий запит до таблиці products для отримання назви і ціни
+    detailed_items = []
+    for item in items:
+        product = conn.execute('SELECT name, price FROM products WHERE id = ?', (item['product_id'],)).fetchone()
+
+        if product:
+            detailed_items.append({
+                'quantity': item['quantity'],
+                'product_id': item['product_id'],
+                'name': product['name'],
+                'price': product['price']
+            })
+        else:
+            print(f"⚠️ Продукт із product_id={item['product_id']} не знайдено у таблиці products.")
+            detailed_items.append({
+                'quantity': item['quantity'],
+                'product_id': item['product_id'],
+                'name': 'Невідомий продукт',  # Вказуємо явне значення замість None
+                'price': 0  # Встановлюємо 0 замість None
+            })
+
+    
+    # Закриваємо з'єднання з базою даних
     conn.close()
-    return order, items
+
+    return order, detailed_items
 
 def update_order_status(order_id, status):
     conn = get_db_connection()
@@ -158,5 +191,27 @@ def add_feedback(name, email, message):
     finally:
         conn.close()
 
+def get_products(id=None, tag=None, name=None):
+    conn = get_db_connection()
+    cursor = conn.cursor()
 
+    query = "SELECT * FROM products WHERE 1=1"
+    params = []
+
+    if id is not None: 
+        query += " AND id = ?"
+        params.append(id)
+    if tag is not None:
+        query += " AND tag = ?"
+        params.append(tag)
+    if name is not None:
+        query += " AND name = ?"
+        params.append(name)
+
+    cursor.execute(query, params)
+    results = cursor.fetchall()
+
+    conn.close()
+
+    return results
     

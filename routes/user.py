@@ -114,7 +114,7 @@ def get_users():
 def get_username():
     user_id = session.get('user_id')
     if user_id is None:
-        return None  # Якщо користувача немає в сесії, повертаємо None
+        return None
     
     conn = get_db_connection()
     result = conn.execute('SELECT username FROM users WHERE id = ?', (user_id,)).fetchone()
@@ -123,5 +123,5 @@ def get_username():
     conn.close()
     
     if result:
-        return result['username']  # Якщо користувач знайдений, повертаємо ім'я
-    return None  # Якщо користувач не знайдений
+        return result['username'] 
+    return None 
