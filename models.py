@@ -81,7 +81,7 @@ def get_products():
     return product
 
 def get_db_connection():
-    conn = sqlite3.connect('db.sqlite', check_same_thread=False)
+    conn = sqlite3.connect('data/db.sqlite')
     conn.row_factory = sqlite3.Row
     return conn
 
