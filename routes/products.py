@@ -46,10 +46,10 @@ def add_to_cart(product_id):
     else:
         # Якщо продукт ще не в кошику, додаємо його
         insert_query = """
-            INSERT INTO cart (user_id, name, price, quantity)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO cart (user_id, name, price, quantity, product_id )
+            VALUES (?, ?, ?, ?, ?)
         """
-        conn.execute(insert_query, (user_id, product['name'], product['price'], 1))
+        conn.execute(insert_query, (user_id, product['name'], product['price'], 1,product_id))
 
     conn.commit()
     conn.close()

@@ -32,6 +32,7 @@ def init_db():
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     name TEXT NOT NULL,
+    product_id INTEGER NOT NULL,
     price REAL NOT NULL,
     quantity INTEGER NOT NULL
 );
@@ -94,7 +95,7 @@ def add_order(email, address, cart):
     order_id = cur.lastrowid
     for item in cart:
         cur.execute('INSERT INTO order_items (order_id, product_id, quantity) VALUES (?, ?, ?)',
-                    (order_id, item['id'], item['quantity']))
+                    (order_id, item['product_id'], item['quantity']))
     conn.commit()
     conn.close()
 
